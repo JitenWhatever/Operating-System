@@ -1,0 +1,97 @@
+#include<bits/stdc++.h>
+using namespace std;
+void first_fit(int [],int [],int);
+void best_fit(int [],int [],int);
+void worst_fit(int [],int [],int);
+int main()
+{	int n;
+        cout<<"enter the number of processes :\n" ;
+                    cin>>n;
+	int memory[n],process[n];
+	cout<<"enter the memory sizes :\n";
+	for(int i=0;i<n;i++)
+		cin>>memory[i];
+ cout<<"enter the Processes Pid :\n";
+	for(int i=0;i<n;i++)
+	{	cin>>process[i];
+	}
+	first_fit(memory,process,n);
+	best_fit(memory,process,n);
+	worst_fit(memory,process,n);
+	return 0;
+}
+
+void first_fit(int memory[],int process[],int n)
+{	map<int,int> ans;
+	bool allocated[n];
+	memset(allocated,false,sizeof(allocated));
+	for(int i=0;i<n;i++)
+		ans[i]=-1;
+	for(int i=0;i<n;i++)
+	{	int j,temp=process[i];
+		for(j=0;j<n;j++)
+		{	if(memory[j]>=temp and allocated[j]==false)
+				break;
+		}
+		if(j<n)	{allocated[j]=true;
+		ans[i]=j;	}
+	}
+	cout<<"FIRST FIT: \n";
+	for(int i=0;i<n;i++)
+	{	if(ans[i]>=0)	cout<<ans[i]<<" ";
+		else	cout<<"NA ";
+	}
+	cout<<endl;
+	return;
+}
+
+void best_fit(int memory[],int process[],int n)
+{	map<int,int> ans;
+	bool allocated[n];
+	memset(allocated,false,sizeof(allocated));
+	for(int i=0;i<n;i++)
+		ans[i]=-1;
+	for(int i=0;i<n;i++)
+	{	int j,min_index=-1,temp=process[i];
+		for(j=0;j<n;j++)
+		{	if(memory[j]>=temp and allocated[j]==false)
+			{	if(min_index==-1 or memory[j]<memory[min_index])
+					min_index=j;
+			}
+		}
+		if(min_index>0)	{allocated[min_index]=true;
+		ans[i]=min_index;	}
+	}
+	cout<<"BEST FIT: \n";
+	for(int i=0;i<n;i++)
+	{	if(ans[i]>=0)	cout<<ans[i]<<" ";
+		else	cout<<"NA ";
+	}
+	cout<<endl;
+	return;
+}
+void worst_fit(int memory[],int process[],int n)
+{	map<int,int> ans;
+	bool allocated[n];
+	memset(allocated,false,sizeof(allocated));
+	for(int i=0;i<n;i++)
+		ans[i]=-1;
+	for(int i=0;i<n;i++)
+	{	int j,max_index=-1,temp=process[i];
+		for(j=0;j<n;j++)
+		{	if(memory[j]>=temp and allocated[j]==false)
+			{	if(max_index==-1 or memory[j]>memory[max_index])
+					max_index=j;
+			}
+		}
+		if(max_index>0)	{allocated[max_index]=true;
+		ans[i]=max_index;	}
+	}
+	cout<<"WORST FIT: \n";
+	for(int i=0;i<n;i++)
+	{	if(ans[i]>=0)	cout<<ans[i]<<" ";
+		else	cout<<"NA ";
+	}
+	cout<<endl;
+	return;
+}
